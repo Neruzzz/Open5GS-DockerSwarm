@@ -84,10 +84,6 @@ RUN apt-get update && \
 COPY --from=builder /UERANSIM/build /UERANSIM/build
 COPY --from=builder /UERANSIM/config /UERANSIM/config
 
-RUN mkdir /run/sshd && \
-    mkdir /root/.ssh
-COPY /utils/ssh-credentials/* /root/.ssh/
-
 # Set the working directory to UERANSIM
 WORKDIR /UERANSIM/build
 

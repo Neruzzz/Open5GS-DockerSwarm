@@ -21,7 +21,8 @@ fi
 sleep 5
 
 echo "Creating new stack"
-docker stack deploy -c open5gs-stack.yml open5gs
+docker stack deploy -c open5gs-stack.yml 
+sleep 5
 
 echo  "Retrieving all the service IPs"
 service_names=$(docker service ls --format "{{.Name}}")
@@ -31,6 +32,6 @@ service_ips=()
 
 for service_name in "${service_names[@]}"; do
     service_ips+=$(docker service inspect --format '{{ (index .Endpoint.VirtualIPs 0).Addr }}' $service_name)
-
 done
+
 echo ${service_ips[@]}

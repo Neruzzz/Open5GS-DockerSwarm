@@ -1,4 +1,8 @@
 #!/bin/bash
+echo "Waiting for all nodes IPs"
+sleep 20
+
+
 if [[ -z "$COMPONENT_NAME" ]]; then
 	echo "Error: COMPONENT_NAME environment variable not set"; exit 1;
 elif [[ "$COMPONENT_NAME" =~ ^(amf-[[:digit:]]+$) ]]; then
