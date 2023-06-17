@@ -21,8 +21,7 @@ fi
 sleep 5
 
 echo "Creating new stack"
-docker stack deploy -c open5gs-stack.yml 
-sleep 5
+docker stack deploy -c open5gs-stack.yml open5gs
 
 echo  "Retrieving all the service IPs"
 service_names=$(docker service ls --format "{{.Name}}")
