@@ -35,18 +35,19 @@ services:
         constraints:
           - node.role == manager
 
-  # nrf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   container_name: nrf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=nrf-1
-  #   volumes:
-  #     - ./open5gs/config/nrf:/mnt/nrf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  nrf:
+    image: ${OPEN5GS_IMAGE}
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=nrf-1
+    volumes:
+      - ./open5gs/config/nrf:/mnt/nrf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
   # scp:
   #   image: ${OPEN5GS_IMAGE}

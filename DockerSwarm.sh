@@ -24,21 +24,52 @@ echo "Creating new stack"
 docker stack deploy -c open5gs-stack.yml open5gs
 
 echo  "Retrieving all the service IPs"
+service_names=$(docker service ls --format "{{.Name}}")
 
-# Delete old service names and IPs from .env
-sed -i '25,$d' .env
+# Declare an associative array to store service names and IPs
+declare -A service_ips
 
-# Run the command and capture the JSON output
-json_output=$(docker network inspect open5gs_default)
+subnet_range=$(docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open5gs_default)
+# Extract the subnet prefix from the subnet range
+subnet_prefix=$(echo "$subnet_range" | cut -d '/' -f 1)
+subnet_prefix_with_wildcard="$subnet*"
 
-# Parse the JSON output and extract service names and IPs
-service_names=($(echo "$json_output" | jq -r '.[0].Containers | keys[]'))
-service_ips=($(echo "$json_output" | jq -r '.[0].Containers[].IPv4Address'))
-
-# Create the .env file and populate it with service names and IPs
-for ((i=0; i<${#service_names[@]}; i++)); do
-    service_name=${service_names[i]%%.*}
-    service_ip=${service_ips[i]%/*}
-    echo "${service_name}=${service_ip}" >> .env
+# Iterate over service names and assign IPs
+for service_name in $service_names; do
+    ips=$(docker service inspect --format='{{range .Endpoint.VirtualIPs}}{{.Addr}} {{end}}' "$service_name")
+    for ip in $ips; do
+        ip_without_mask=$(echo "$ip" | cut -d '/' -f 1)
+        incremented_ip=$(echo "$ip_without_mask" | awk -F '.' -v OFS='.' '{$NF+=1; print}')
+        
+        if [[ $incremented_ip == $subnet_prefix_with_wildcard ]]; then
+            service_ips[$service_name]=$incremented_ip
+        fi
+    done
 done
 
+# Delete old Service names and IPs
+sed -i '25,$d' .env
+
+# Service names and IPs to the .env file
+for service_name in "${!service_ips[@]}"; do
+    echo "$service_name=${service_ips[$service_name]}" >> .env
+done
+
+
+# Copying the .env to all the subdirectories
+file_to_copy="$(dirname "$0")/.env"
+config="$(dirname "$0")/open5gs/config"
+
+cp "$file_to_copy" "./ueransim/"
+echo ".env file copied to ./ueransim"
+
+cp "$file_to_copy" "./webui/"
+echo ".env file copied to ./webui"
+
+# Iterate through subdirectories of open5gs
+for dir in "$config"/*; do
+  if [[ -d "$dir" ]]; then
+    cp "$file_to_copy" "$dir/"
+    echo ".env file copied to $dir"
+  fi
+done

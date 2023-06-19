@@ -100,7 +100,6 @@ RUN apt-get update && \
         python3-pip \
         iproute2 \
         iptables \
-        jq \
         openssh-server \
         openssh-client && \
     apt-get autoremove -y && apt-get autoclean
