@@ -49,18 +49,20 @@ services:
         constraints:
           - node.role == manager
 
-  # scp:
-  #   image: ${OPEN5GS_IMAGE}
-  #   container_name: scp
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=scp-1
-  #   volumes:
-  #     - ./open5gs/config/scp:/mnt/scp
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  scp:
+    image: ${OPEN5GS_IMAGE}
+    container_name: scp
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=scp-1
+    volumes:
+      - ./open5gs/config/scp:/mnt/scp
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
   # ausf:
   #   image: ${OPEN5GS_IMAGE}
