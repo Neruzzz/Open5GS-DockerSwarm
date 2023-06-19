@@ -78,6 +78,7 @@ RUN apt-get update && \
         net-tools \
         iputils-ping \
         openssh-server \
+        jq \
         openssh-client && \
     apt-get autoremove -y && apt-get autoclean
 

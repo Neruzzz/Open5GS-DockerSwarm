@@ -3,12 +3,6 @@ version: '3.8'
 volumes:
   mongodb: {}
 
-#Setting up the common range of ips used by all the containers (5g services and webui)
-networks:
-  common_network:
-    ipam:
-      config:
-       - subnet: ${COMMON_NETWORK}
 
 services:
   mongo:
