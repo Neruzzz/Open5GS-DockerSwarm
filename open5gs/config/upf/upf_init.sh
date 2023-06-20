@@ -26,6 +26,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+export $(cat /mnt/upf/.env) 2> /dev/null
+
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
@@ -35,9 +37,9 @@ python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 192.168.100.0/24 --i
 python3 /mnt/upf/tun_if.py --tun_ifname ogstun2 --ipv4_range 192.168.101.0/24 --ipv6_range 2001:230:babe::/48 --nat_rule 'no'
 
 cp /mnt/upf/upf.yaml install/etc/open5gs
-sed -i 's|UPF_IP|'$UPF_IP'|g' install/etc/open5gs/upf.yaml
-sed -i 's|SMF_IP|'$SMF_IP'|g' install/etc/open5gs/upf.yaml
-sed -i 's|UPF_ADVERTISE_IP|'$UPF_ADVERTISE_IP'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

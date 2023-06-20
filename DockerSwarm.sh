@@ -10,6 +10,17 @@
 
 export $(cat .env) 2> /dev/null
 
+log_folder="./log"  # Path to the log folder relative to the current directory
+
+echo "Deleting old log files"
+# Check if the log folder exists
+if [ -d "$log_folder" ]; then
+  # Delete all files inside the log folder
+  rm -f "$log_folder"/*
+  echo "All files inside the log folder have been deleted."
+fi
+echo ""
+
 echo "Removing stack"
 docker stack rm open5gs
 
@@ -19,9 +30,11 @@ if [ ! -z "$RESIDUAL_CONTAINERS" ]; then
     docker rm -f $RESIDUAL_CONTAINERS > /dev/null
 fi
 sleep 5
+echo ""
 
 echo "Creating new stack"
 docker stack deploy -c open5gs-stack.yml open5gs
+echo ""
 
 echo  "Retrieving all the service IPs"
 service_names=$(docker service ls --format "{{.Name}}")

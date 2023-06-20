@@ -26,13 +26,15 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export DB_URI="mongodb://${MONGO_IP}/open5gs"
+export $(cat /mnt/pcf/.env) 2> /dev/null
+
+export DB_URI="mongodb://${open5gs_mongo}/open5gs"
 
 cp /mnt/pcf/pcf.yaml install/etc/open5gs
-sed -i 's|PCF_IP|'$PCF_IP'|g' install/etc/open5gs/pcf.yaml
-sed -i 's|SCP_IP|'$SCP_IP'|g' install/etc/open5gs/pcf.yaml
-sed -i 's|NRF_IP|'$NRF_IP'|g' install/etc/open5gs/pcf.yaml
-sed -i 's|MONGO_IP|'$MONGO_IP'|g' install/etc/open5gs/pcf.yaml
+sed -i 's|PCF_IP|'$open5gs_pcf'|g' install/etc/open5gs/pcf.yaml
+sed -i 's|SCP_IP|'$open5gs_scp'|g' install/etc/open5gs/pcf.yaml
+sed -i 's|NRF_IP|'$open5gs_nrf'|g' install/etc/open5gs/pcf.yaml
+sed -i 's|MONGO_IP|'$open5gs_mongo'|g' install/etc/open5gs/pcf.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

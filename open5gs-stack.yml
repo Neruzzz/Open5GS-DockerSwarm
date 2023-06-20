@@ -29,7 +29,7 @@ services:
     volumes:
       - ./webui:/mnt/webui
     ports:
-      - "3000:3000/tcp"
+      - "3000:3000"
     deploy:
       placement:
         constraints:
@@ -51,7 +51,6 @@ services:
 
   scp:
     image: ${OPEN5GS_IMAGE}
-    container_name: scp
     env_file:
       - .env
     environment:
@@ -64,184 +63,179 @@ services:
         constraints:
           - node.role == manager
 
-  # ausf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #   container_name: ausf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=ausf-1
-  #   volumes:
-  #     - ./open5gs/config/ausf:/mnt/ausf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  ausf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ausf-1
+    volumes:
+      - ./open5gs/config/ausf:/mnt/ausf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # udr:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - mongo
-  #   container_name: udr
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=udr-1
-  #   volumes:
-  #     - ./open5gs/config/udr:/mnt/udr
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  udr:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=udr-1
+    volumes:
+      - ./open5gs/config/udr:/mnt/udr
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # udm:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #   container_name: udm
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=udm-1
-  #   volumes:
-  #     - ./open5gs/config/udm:/mnt/udm
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  udm:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=udm-1
+    volumes:
+      - ./open5gs/config/udm:/mnt/udm
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # pcf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - mongo
-  #   container_name: pcf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=pcf-1
-  #   volumes:
-  #     - ./open5gs/config/pcf:/mnt/pcf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
-  #     - "9091/tcp"
+  pcf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=pcf-1
+    volumes:
+      - ./open5gs/config/pcf:/mnt/pcf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # bsf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - mongo
-  #   container_name: bsf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=bsf-1
-  #   volumes:
-  #     - ./open5gs/config/bsf:/mnt/bsf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  bsf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=bsf-1
+    volumes:
+      - ./open5gs/config/bsf:/mnt/bsf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # nssf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - mongo
-  #   container_name: nssf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=nssf-1
-  #   volumes:
-  #     - ./open5gs/config/nssf:/mnt/nssf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "7777/tcp"
+  nssf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=nssf-1
+    volumes:
+      - ./open5gs/config/nssf:/mnt/nssf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+  smf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - amf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=smf-1
+    volumes:
+      - ./open5gs/config/smf:/mnt/smf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # smf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - amf
-  #   container_name: smf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=smf-1
-  #   volumes:
-  #     - ./open5gs/config/smf:/mnt/smf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "3868/udp"
-  #     - "3868/tcp"
-  #     - "3868/sctp"
-  #     - "5868/udp"
-  #     - "5868/tcp"
-  #     - "5868/sctp"
-  #     - "8805/udp"
-  #     - "2123/udp"
-  #     - "7777/tcp"
-  #     - "9091/tcp"
+  upf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - smf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=upf-1
+    volumes:
+      - ./open5gs/config/upf:/mnt/upf
+      - ./log:/open5gs/install/var/log/open5gs
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "2152:2152/udp"
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      #- net.ipv6.conf.all.disable_ipv6=0
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # upf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - smf
-  #   container_name: upf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=upf-1
-  #   volumes:
-  #     - ./open5gs/config/upf:/mnt/upf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "2152/udp"
-  #     - "8805/udp"
-  #     - "9091/tcp"
-  #   # ports:
-  #   #   - "2152:2152/udp"
-  #   cap_add:
-  #     - NET_ADMIN
-  #   privileged: true
-  #   sysctls:
-  #     - net.ipv4.ip_forward=1
-  #     #- net.ipv6.conf.all.disable_ipv6=0
+  amf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - ausf
+      - udm
+      - udr
+      - pcf
+      - bsf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=amf-1
+    volumes:
+      - ./open5gs/config/amf:/mnt/amf
+      - ./log:/open5gs/install/var/log/open5gs
+    ports:
+      - "38412:38412/sctp"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 
-  # amf:
-  #   image: ${OPEN5GS_IMAGE}
-  #   depends_on:
-  #     - nrf
-  #     - scp
-  #     - ausf
-  #     - udm
-  #     - udr
-  #     - pcf
-  #     - bsf
-  #   container_name: amf
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=amf-1
-  #   volumes:
-  #     - ./open5gs/config/amf:/mnt/amf
-  #     - ./log:/open5gs/install/var/log/open5gs
-  #   expose:
-  #     - "38412/sctp"
-  #     - "7777/tcp"
-  #     - "9091/tcp"
-  #   # ports:
-  #   #   - "38412:38412/sctp"
 
   # nr_gnb:
   #   image: ${UERANSIM_IMAGE}

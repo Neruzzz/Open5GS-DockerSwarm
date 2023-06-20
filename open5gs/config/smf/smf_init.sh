@@ -26,6 +26,9 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
+export $(cat /mnt/smf/.env) 2> /dev/null
+
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
@@ -37,7 +40,7 @@ cp /mnt/smf/smf.yaml install/etc/open5gs
 # cp /mnt/smf/smf.conf install/etc/freeDiameter
 cp /mnt/smf/make_certs.sh install/etc/freeDiameter
 
-sed -i 's|SMF_IP|'$SMF_IP'|g' install/etc/open5gs/smf.yaml
-sed -i 's|SCP_IP|'$SCP_IP'|g' install/etc/open5gs/smf.yaml
-sed -i 's|NRF_IP|'$NRF_IP'|g' install/etc/open5gs/smf.yaml
-sed -i 's|UPF_IP|'$UPF_IP'|g' install/etc/open5gs/smf.yaml
+sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/smf.yaml
+sed -i 's|SCP_IP|'$open5gs_scp'|g' install/etc/open5gs/smf.yaml
+sed -i 's|NRF_IP|'$open5gs_nrf'|g' install/etc/open5gs/smf.yaml
+sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/smf.yaml

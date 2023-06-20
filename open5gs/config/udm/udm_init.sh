@@ -26,10 +26,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+export $(cat /mnt/udm/.env) 2> /dev/null
+
 cp /mnt/udm/udm.yaml install/etc/open5gs
-sed -i 's|UDM_IP|'$UDM_IP'|g' install/etc/open5gs/udm.yaml
-sed -i 's|SCP_IP|'$SCP_IP'|g' install/etc/open5gs/udm.yaml
-sed -i 's|NRF_IP|'$NRF_IP'|g' install/etc/open5gs/udm.yaml
+sed -i 's|UDM_IP|'$open5gs_udm'|g' install/etc/open5gs/udm.yaml
+sed -i 's|SCP_IP|'$open5gs_scp'|g' install/etc/open5gs/udm.yaml
+sed -i 's|NRF_IP|'$open5gs_nrf'|g' install/etc/open5gs/udm.yaml
 
 cp /mnt/udm/curve25519-1.key install/etc/open5gs/hnet
 cp /mnt/udm/secp256r1-2.key install/etc/open5gs/hnet

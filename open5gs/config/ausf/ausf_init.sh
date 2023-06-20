@@ -26,10 +26,12 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+export $(cat /mnt/ausf/.env) 2> /dev/null
+
 cp /mnt/ausf/ausf.yaml install/etc/open5gs
-sed -i 's|AUSF_IP|'$AUSF_IP'|g' install/etc/open5gs/ausf.yaml
-sed -i 's|SCP_IP|'$SCP_IP'|g' install/etc/open5gs/ausf.yaml
-sed -i 's|NRF_IP|'$NRF_IP'|g' install/etc/open5gs/ausf.yaml
+sed -i 's|AUSF_IP|'$open5gs_ausf'|g' install/etc/open5gs/ausf.yaml
+sed -i 's|SCP_IP|'$open5gs_scp'|g' install/etc/open5gs/ausf.yaml
+sed -i 's|NRF_IP|'$open5gs_nrf'|g' install/etc/open5gs/ausf.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

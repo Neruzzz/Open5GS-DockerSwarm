@@ -29,6 +29,8 @@
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+export $(cat /mnt/metrics/.env) 2> /dev/null
+
 mkdir -p /config
 
 cp /mnt/metrics/prometheus.yml /config/

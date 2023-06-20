@@ -26,6 +26,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+export $(cat /mnt/pcrf/.env) 2> /dev/null
+
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
 export DB_URI="mongodb://${MONGO_IP}/open5gs"
 
