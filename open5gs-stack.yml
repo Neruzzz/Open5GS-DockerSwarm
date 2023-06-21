@@ -210,7 +210,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.role == worker
 
   amf:
     image: ${OPEN5GS_IMAGE}
