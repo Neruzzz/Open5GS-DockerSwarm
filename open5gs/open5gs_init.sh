@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Waiting for all nodes IPs"
-sleep 10
+sleep 30
 
 if [[ -z "$COMPONENT_NAME" ]]; then
 	echo "Error: COMPONENT_NAME environment variable not set"; exit 1;

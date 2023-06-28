@@ -16,7 +16,7 @@ echo "Deleting old log files"
 # Check if the log folder exists
 if [ -d "$log_folder" ]; then
   # Delete all files inside the log folder
-  rm -f "$log_folder"/*
+  rm -rf "$log_folder"/*
   echo "All files inside the log folder have been deleted."
 fi
 echo ""
@@ -42,7 +42,7 @@ service_names=$(docker service ls --format "{{.Name}}")
 # Declare an associative array to store service names and IPs
 declare -A service_ips
 
-subnet_range=$(docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open5gs_default)
+subnet_range=$(docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open5gs_common_network)
 # Extract the subnet prefix from the subnet range
 subnet_prefix=$(echo "$subnet_range" | cut -d '/' -f 1)
 subnet_prefix_with_wildcard="$subnet*"
@@ -61,7 +61,7 @@ for service_name in $service_names; do
 done
 
 # Delete old Service names and IPs
-sed -i '25,$d' .env
+sed -i '24,$d' .env
 
 # Service names and IPs to the .env file
 for service_name in "${!service_ips[@]}"; do
@@ -73,18 +73,18 @@ done
 file_to_copy="$(dirname "$0")/.env"
 config="$(dirname "$0")/open5gs/config"
 
-cp "$file_to_copy" "./ueransim/"
+cp -f "$file_to_copy" "./ueransim/"
 echo ".env file copied to ./ueransim"
 
-cp "$file_to_copy" "./webui/"
+cp -f "$file_to_copy" "./webui/"
 echo ".env file copied to ./webui"
 
 # Iterate through subdirectories of open5gs
 for dir in "$config"/*; do
   if [[ -d "$dir" ]]; then
-    cp "$file_to_copy" "$dir/"
+    cp -f "$file_to_copy" "$dir/"
     echo ".env file copied to $dir"
   fi
 done
 
-scp ./open5gs/config/upf WorkLaptop:/mnt/upf
+scp -r ./open5gs/config/upf/* upf:./open5gs/config/upf

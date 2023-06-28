@@ -3,6 +3,13 @@ version: '3.8'
 volumes:
   mongodb: {}
 
+networks:
+  common_network:
+    driver: overlay
+    ipam:
+      config:
+        - subnet: ${common_network}
+
 
 services:
   mongo:
@@ -16,6 +23,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
 
   webui:
@@ -34,6 +43,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   nrf:
     image: ${OPEN5GS_IMAGE}
@@ -48,6 +59,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   scp:
     image: ${OPEN5GS_IMAGE}
@@ -62,6 +75,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   ausf:
     image: ${OPEN5GS_IMAGE}
@@ -79,6 +94,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   udr:
     image: ${OPEN5GS_IMAGE}
@@ -97,6 +114,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   udm:
     image: ${OPEN5GS_IMAGE}
@@ -114,6 +133,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   pcf:
     image: ${OPEN5GS_IMAGE}
@@ -132,6 +153,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   bsf:
     image: ${OPEN5GS_IMAGE}
@@ -150,6 +173,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   nssf:
     image: ${OPEN5GS_IMAGE}
@@ -168,6 +193,9 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
+
   smf:
     image: ${OPEN5GS_IMAGE}
     depends_on:
@@ -185,6 +213,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
   upf:
     image: ${OPEN5GS_IMAGE}
@@ -196,10 +226,6 @@ services:
       - .env
     environment:
       - COMPONENT_NAME=upf-1
-    volumes:
-      - ./open5gs/config/upf:/mnt/upf
-      - ./log:/open5gs/install/var/log/open5gs
-      - /dev/net/tun:/dev/net/tun
     ports:
       - "2152:2152/udp"
     cap_add:
@@ -211,6 +237,9 @@ services:
       placement:
         constraints:
           - node.role == worker
+    networks:
+      - common_network
+
 
   amf:
     image: ${OPEN5GS_IMAGE}
@@ -235,6 +264,8 @@ services:
       placement:
         constraints:
           - node.role == manager
+    networks:
+      - common_network
 
 
   # nr_gnb:

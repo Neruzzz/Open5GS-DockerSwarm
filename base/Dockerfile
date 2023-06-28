@@ -117,6 +117,11 @@ COPY --from=builder /open5gs/install/include /open5gs/install/include
 COPY --from=builder /open5gs/install/lib /open5gs/install/lib
 COPY --from=builder /open5gs/webui /open5gs/webui
 
+# This part is to allow the scp to the UPF node that runs on another machine
+RUN mkdir /run/sshd && \
+    mkdir /root/.ssh
+
+COPY /utils/ssh-credentials/* /root/.ssh/
 
 # Set the working directory to open5gs
 WORKDIR /open5gs

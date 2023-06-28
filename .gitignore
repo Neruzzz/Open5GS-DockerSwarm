@@ -1,2 +1,3 @@
 .vscode
 log
+/utils/ssh_credentials
