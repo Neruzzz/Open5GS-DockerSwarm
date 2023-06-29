@@ -50,7 +50,7 @@ elif [[ "$COMPONENT_NAME" =~ ^(udr-[[:digit:]]+$) ]]; then
     cd install/bin && ./open5gs-udrd
 elif [[ "$COMPONENT_NAME" =~ ^(upf-[[:digit:]]+$) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
-	/mnt/upf/upf_init.sh  && \
+	sleep 10 && /mnt/upf/upf_init.sh  && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" =~ ^(webui) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"

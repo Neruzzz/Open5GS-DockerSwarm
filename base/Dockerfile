@@ -101,6 +101,8 @@ RUN apt-get update && \
         iproute2 \
         iptables \
         openssh-server \
+        openssh-client \
+        git \
         openssh-client && \
     apt-get autoremove -y && apt-get autoclean
 
@@ -117,11 +119,17 @@ COPY --from=builder /open5gs/install/include /open5gs/install/include
 COPY --from=builder /open5gs/install/lib /open5gs/install/lib
 COPY --from=builder /open5gs/webui /open5gs/webui
 
-# This part is to allow the scp to the UPF node that runs on another machine
-RUN mkdir /run/sshd && \
-    mkdir /root/.ssh
+# For git pull without authorisation
+RUN mkdir /root/.ssh && \
+    mkdir /mnt/upf
 
-COPY /utils/ssh-credentials/* /root/.ssh/
+COPY /utils/ssh_credentials/* /root/.ssh/
+COPY /open5gs/config/upf/* /mnt/upf
+
+RUN chmod 600 /root/.ssh/id_rsa
+
+# Disable strict host key checking (to avoid prompts)
+RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
 # Set the working directory to open5gs
 WORKDIR /open5gs

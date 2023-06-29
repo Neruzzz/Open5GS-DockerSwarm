@@ -86,5 +86,3 @@ for dir in "$config"/*; do
     echo ".env file copied to $dir"
   fi
 done
-
-scp -r ./open5gs/config/upf/* upf:./open5gs/config/upf

@@ -5,11 +5,11 @@ MONGO_TAG = open5gs-mongo
 PREFIX = registry.gitlab.bsc.es/ppc/software/open5gs/
 
 # Set default architecture to amd
-ARCH_TAG=amd
+ARCH_TAG=latest # Change when done with amd to do manifest
 # Check if the system architecture is arm
-ifeq ($(shell uname -m),aarch64)
-    ARCH_TAG=arm
-endif
+# ifeq ($(shell uname -m),aarch64)
+#     ARCH_TAG=arm
+# endif
 
 all: openmongo
 
