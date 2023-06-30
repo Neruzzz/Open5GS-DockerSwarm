@@ -87,6 +87,7 @@ for dir in "$config"/*; do
   fi
 done
 
+# Push the changes to git so UPF can download them
 git add .
 git commit -m "Execution"
 git push
