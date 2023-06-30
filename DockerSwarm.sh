@@ -9,6 +9,7 @@
 # docker node rm name (from master when down)
 
 export $(cat .env) 2> /dev/null
+git pull origin execution
 
 log_folder="./log"  # Path to the log folder relative to the current directory
 
@@ -86,6 +87,7 @@ for dir in "$config"/*; do
     echo ".env file copied to $dir"
   fi
 done
+
 
 git add .
 git commit -m "Execution"
