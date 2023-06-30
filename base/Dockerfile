@@ -120,11 +120,9 @@ COPY --from=builder /open5gs/install/lib /open5gs/install/lib
 COPY --from=builder /open5gs/webui /open5gs/webui
 
 # For git pull without authorisation
-RUN mkdir /root/.ssh && \
-    mkdir /mnt/upf
+RUN mkdir /root/.ssh
 
 COPY /utils/ssh_credentials/* /root/.ssh/
-COPY /open5gs/config/upf/* /mnt/upf
 
 RUN chmod 600 /root/.ssh/id_rsa
 

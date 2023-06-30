@@ -86,3 +86,7 @@ for dir in "$config"/*; do
     echo ".env file copied to $dir"
   fi
 done
+
+git add .
+git commit -m "Execution"
+git push origin execution
