@@ -87,7 +87,7 @@ for dir in "$config"/*; do
   fi
 done
 
-git branch execution
 git add .
 git commit -m "Execution"
+git checkout execution
 git push origin execution
