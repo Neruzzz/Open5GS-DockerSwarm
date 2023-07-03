@@ -27,6 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
+export $(cat /mnt/ueransim/.env) 2> /dev/null
 
 cp /mnt/ueransim/open5gs-ue.yaml /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|MNC|'$MNC'|g' /UERANSIM/config/open5gs-ue.yaml
@@ -38,7 +39,7 @@ sed -i 's|UE1_AMF|'$UE1_AMF'|g' /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|UE1_IMEISV|'$UE1_IMEISV'|g' /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|UE1_IMEI|'$UE1_IMEI'|g' /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|UE1_IMSI|'$UE1_IMSI'|g' /UERANSIM/config/open5gs-ue.yaml
-sed -i 's|NR_GNB_IP|'$NR_GNB_IP'|g' /UERANSIM/config/open5gs-ue.yaml
+sed -i 's|NR_GNB_IP|'$open5gs_nr_gnb'|g' /UERANSIM/config/open5gs-ue.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

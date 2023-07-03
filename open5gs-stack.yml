@@ -290,21 +290,26 @@ services:
       - common_network
 
 
-  # nr_ue:
-  #   image: ${UERANSIM_IMAGE}
-  #   container_name: nr_ue
-  #   depends_on:
-  #     - nr_gnb
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - ./ueransim:/mnt/ueransim
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     - COMPONENT_NAME=ueransim-ue-1
-  #   expose:
-  #     - "4997/udp"
-  #   cap_add:
-  #     - NET_ADMIN
-  #   privileged: true
+  nr_ue:
+    image: ${UERANSIM_IMAGE}
+    depends_on:
+      - nr_gnb
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ueransim:/mnt/ueransim
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ueransim-ue-1
+    expose:
+      - "4997/udp"
+    cap_add:
+      - NET_ADMIN
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
