@@ -29,6 +29,10 @@
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
 export $(cat /mnt/ueransim/.env) 2> /dev/null
 
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun
+
 cp /mnt/ueransim/open5gs-ue.yaml /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|MNC|'$MNC'|g' /UERANSIM/config/open5gs-ue.yaml
 sed -i 's|MCC|'$MCC'|g' /UERANSIM/config/open5gs-ue.yaml
