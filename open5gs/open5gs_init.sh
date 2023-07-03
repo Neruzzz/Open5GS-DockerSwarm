@@ -54,7 +54,8 @@ elif [[ "$COMPONENT_NAME" =~ ^(upf-[[:digit:]]+$) ]]; then
 	mkdir -p /mnt/upf/
 	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
 	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
-	/mnt/upf/upf_init.sh
+	/mnt/upf/upf_init.sh && \
+	ifconfig && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" =~ ^(webui) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
