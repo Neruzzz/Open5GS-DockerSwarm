@@ -28,10 +28,6 @@
 
 export $(cat /mnt/upf/.env) 2> /dev/null
 
-# Creating log file
-mkdir -p var/log/open5gs
-touch var/log/open5gs/upf.log
-chmod 600 var/log/open5gs/upf.log
 # Program old way ogstun
 mkdir -p /dev/net
 mknod /dev/net/tun c 10 200
