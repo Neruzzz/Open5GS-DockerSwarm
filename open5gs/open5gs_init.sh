@@ -54,7 +54,12 @@ elif [[ "$COMPONENT_NAME" =~ ^(upf-[[:digit:]]+$) ]]; then
 	mkdir -p /mnt/upf/ && \
 	mkdir -p var/log/open5gs && \
 	touch var/log/open5gs/upf.log && \
+	echo "ls 1"
 	ls var/log/open5gs/ && \
+	ls && \
+	echo "ls 2"
+	mkdir var && \
+	ls && \
 	chmod 600 var/log/open5gs/upf.log && \
 	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
 	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
