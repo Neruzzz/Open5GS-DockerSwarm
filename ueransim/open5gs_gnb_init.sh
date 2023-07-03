@@ -37,5 +37,7 @@ sed -i 's|MCC|'$MCC'|g' /UERANSIM/config/open5gs-gnb.yaml
 sed -i 's|NR_GNB_IP|'$open5gs_nr_gnb'|g' /UERANSIM/config/open5gs-gnb.yaml
 sed -i 's|AMF_IP|'$open5gs_amf'|g' /UERANSIM/config/open5gs-gnb.yaml
 
+sleep 10
+
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
