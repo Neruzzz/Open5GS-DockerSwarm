@@ -27,12 +27,13 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 export $(cat /mnt/upf/.env) 2> /dev/null
+# Create tun device
+mkdir -p /dev/net
+mknod /dev/net/tun c 10 200
+chmod 600 /dev/net/tun
 
 
 # # Program old way ogstun
-# mkdir -p /dev/net
-# mknod /dev/net/tun c 10 200
-# chmod 600 /dev/net/tun
 
 # ip tuntap add name ogstun mode tun
 # ip addr add 10.45.0.1/16 dev ogstun
