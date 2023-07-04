@@ -302,8 +302,6 @@ services:
       - .env
     environment:
       - COMPONENT_NAME=ueransim-ue-1
-    expose:
-      - "4997/udp"
     cap_add:
       - NET_ADMIN
     deploy:
