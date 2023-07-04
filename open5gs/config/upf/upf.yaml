@@ -11,7 +11,7 @@ upf:
         advertise: UPF_ADVERTISE_IP
     subnet:
       - addr: 10.45.0.1/16
-      # - addr: 2001:db8:cafe::1/48
+      - addr: 2001:db8:cafe::1/48
     metrics:
       - addr: UPF_IP
         port: 9091
