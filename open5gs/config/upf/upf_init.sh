@@ -26,19 +26,23 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-export $(cat /mnt/upf/.env) 2> /dev/null
+# Emulate volumes using github
+git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git # Clone the repo
+mkdir -p /mnt/upf/ # Create the mnt volume for the upf
+cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ # Copy the contents to the mnt folder
+cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ # .env is copied on another command
+
+# Create the log file to emulate log volume
+mkdir -p install/var/log/open5gs
+touch install/var/log/open5gs/upf.log
+
+
+export $(cat /mnt/upf/.env) 2> /dev/null # Export the ips to be evironment variables
+
 # Create tun device
 mkdir -p /dev/net
 mknod /dev/net/tun c 10 200
 chmod 600 /dev/net/tun
-
-
-# # Program old way ogstun
-
-# ip tuntap add name ogstun mode tun
-# ip addr add 10.45.0.1/16 dev ogstun
-# ip addr add 2001:230:cafe::1/48 dev ogstun
-# ip link set ogstun up
 
 export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
 export IF_NAME=$(ip r | awk '/default/ { print $5 }')

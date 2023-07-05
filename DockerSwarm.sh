@@ -42,7 +42,9 @@ service_names=$(docker service ls --format "{{.Name}}")
 # Declare an associative array to store service names and IPs
 declare -A service_ips
 
+# Get the subnet range
 subnet_range=$(docker network inspect --format='{{range .IPAM.Config}}{{.Subnet}}{{end}}' open5gs_common_network)
+
 # Extract the subnet prefix from the subnet range
 subnet_prefix=$(echo "$subnet_range" | cut -d '/' -f 1)
 subnet_prefix_with_wildcard="$subnet*"
@@ -61,7 +63,7 @@ for service_name in $service_names; do
 done
 
 # Delete old Service names and IPs
-sed -i '25,$d' .env
+sed -i '27,$d' .env
 
 # Service names and IPs to the .env file
 for service_name in "${!service_ips[@]}"; do
