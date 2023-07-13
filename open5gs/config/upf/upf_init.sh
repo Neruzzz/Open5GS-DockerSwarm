@@ -26,11 +26,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Emulate volumes using github
-git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git # Clone the repo
-mkdir -p /mnt/upf/ # Create the mnt volume for the upf
-cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ # Copy the contents to the mnt folder
-cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ # .env is copied on another command
 
 # Create the log file to emulate log volume
 mkdir -p install/var/log/open5gs

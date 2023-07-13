@@ -50,6 +50,16 @@ elif [[ "$COMPONENT_NAME" =~ ^(udr-[[:digit:]]+$) ]]; then
     cd install/bin && ./open5gs-udrd
 elif [[ "$COMPONENT_NAME" =~ ^(upf-[[:digit:]]+$) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
+	# Emulate volumes using github
+	# Clone the repo
+	git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git && \ 
+	# Create the mnt volume for the upf
+	mkdir -p /mnt/upf/ && \
+	# Copy the contents to the mnt folder
+	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
+	# .env is copied on another command
+	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
+	# Execute the service init script
 	/mnt/upf/upf_init.sh && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" =~ ^(webui) ]]; then
