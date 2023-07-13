@@ -33,7 +33,7 @@ sleep 5
 echo ""
 
 echo "Creating new stack"
-docker stack deploy -c open5gs-stack.yml open5gs
+docker stack deploy -c open5gs-stack.yml open5gs --with-registry-auth
 echo ""
 
 echo  "Retrieving all the service IPs"
