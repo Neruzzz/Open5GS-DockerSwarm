@@ -236,7 +236,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == worker # This is working
+          - node.role == worker # Working with one edge UPF
     networks:
       - common_network
 
