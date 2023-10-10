@@ -236,7 +236,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager # This is working
+          - node.role == worker # This is working
     networks:
       - common_network
 
