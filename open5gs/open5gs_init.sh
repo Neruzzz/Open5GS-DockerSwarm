@@ -48,7 +48,7 @@ elif [[ "$COMPONENT_NAME" =~ ^(udr-[[:digit:]]+$) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
 	/mnt/udr/udr_init.sh && sleep 10 && \
     cd install/bin && ./open5gs-udrd
-elif elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
+elif [[ "$COMPONENT_NAME" =~ ^(upf_edge-[[:digit:]]+$) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
 	# Emulate volumes using github
 	# Clone the repo
