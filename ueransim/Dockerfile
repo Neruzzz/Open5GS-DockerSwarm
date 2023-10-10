@@ -57,9 +57,9 @@ RUN version=3.20 && \
     make install && ldconfig && \
     cmake --version
 
-# Clone and build UERANSIM
+# Clone and build UERANSIM (the version cloned is from 9 May 2023)
 RUN git clone https://github.com/aligungr/UERANSIM && \
-    cd UERANSIM && git checkout tags/v3.2.6 && \
+    cd UERANSIM && git checkout 3a96298fa284b0da261a60439b21c1adf1677aea && \
     make -j`nproc`
 
 # Build final image
