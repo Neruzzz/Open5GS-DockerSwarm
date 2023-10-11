@@ -52,7 +52,7 @@ elif [[ "$COMPONENT_NAME" == "upf_cloud" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
 	/mnt/udr/upf_init.sh && \
     cd install/bin && ./open5gs-upfd
-elif [[ "$COMPONENT_NAME" == "upf_edge" ]]; then
+elif [[ "$COMPONENT_NAME" =~ ^(upf-[[:digit:]]+$) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
 	# Emulate volumes using github
 	# Clone the repo

@@ -240,7 +240,7 @@ services:
   #   networks:
   #     - common_network
 
-  upf2:
+  upf:
     image: ${OPEN5GS_IMAGE}
     depends_on:
       - nrf
@@ -249,7 +249,7 @@ services:
     env_file:
       - .env
     environment:
-      - COMPONENT_NAME=upf_edge
+      - COMPONENT_NAME=upf-1
     ports:
       - "2152:2152/udp"
     cap_add:
