@@ -216,7 +216,31 @@ services:
     networks:
       - common_network
 
-  upf:
+  # upf:
+  #   image: ${OPEN5GS_IMAGE}
+  #   depends_on:
+  #     - nrf
+  #     - scp
+  #     - smf
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - COMPONENT_NAME=upf_cloud
+  #   ports:
+  #     - "2152:2152/udp"
+  #   cap_add:
+  #     - NET_ADMIN
+  #   sysctls:
+  #     - net.ipv4.ip_forward=1
+  #     #- net.ipv6.conf.all.disable_ipv6=0
+  #   deploy:
+  #     placement:
+  #       constraints:
+  #         - node.role == manager # Working with one edge UPF
+  #   networks:
+  #     - common_network
+
+  upf2:
     image: ${OPEN5GS_IMAGE}
     depends_on:
       - nrf
@@ -225,7 +249,7 @@ services:
     env_file:
       - .env
     environment:
-      - COMPONENT_NAME=upf-edge
+      - COMPONENT_NAME=upf_edge
     ports:
       - "2152:2152/udp"
     cap_add:
