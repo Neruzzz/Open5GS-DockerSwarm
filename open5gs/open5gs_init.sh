@@ -50,7 +50,7 @@ elif [[ "$COMPONENT_NAME" =~ ^(udr-[[:digit:]]+$) ]]; then
     cd install/bin && ./open5gs-udrd
 elif [[ "$COMPONENT_NAME" == "upf-cloud" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
-	/mnt/udr/upf_init.sh && \
+	/mnt/udr/upf_init.sh && sleep 10 && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
