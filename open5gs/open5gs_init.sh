@@ -55,6 +55,16 @@ elif [[ "$COMPONENT_NAME" == "upf-cloud" ]]; then
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
+	
+	# Create the log file to emulate log volume
+	mkdir -p install/var/log/open5gs && \
+	touch install/var/log/open5gs/upf.log && \
+
+	# Create tun device
+	mkdir -p /dev/net && \
+	mknod /dev/net/tun c 10 200 && \
+	chmod 600 /dev/net/tun && \
+
 	# Emulate volumes using github
 	# Clone the repo
 	git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git && \ 
@@ -64,6 +74,7 @@ elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
 	# .env is copied on another command
 	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
+
 	# Execute the service init script
 	/mnt/upf/upf_init.sh && \
     cd install/bin && ./open5gs-upfd

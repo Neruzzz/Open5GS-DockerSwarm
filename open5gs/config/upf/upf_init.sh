@@ -28,11 +28,6 @@
 
 export $(cat /mnt/upf/.env) 2> /dev/null
 
-# Create tun device
-mkdir -p /dev/net
-mknod /dev/net/tun c 10 200
-chmod 600 /dev/net/tun
-
 python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 192.168.100.0/24 --ipv6_range 2001:230:cafe::/48
 
 cp /mnt/upf/upf.yaml install/etc/open5gs
