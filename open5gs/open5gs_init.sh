@@ -57,7 +57,7 @@ elif [[ "$COMPONENT_NAME" == "upf-cloud" ]]; then
 	chmod 600 /dev/net/tun && \
 
 	# Execute UPF script
-	chmod +x /mnt/upf/upfcloud_init.sh && /mnt/upf/upf_init.sh && \
+	chmod +x /mnt/upf/upfcloud_init.sh && /mnt/upf/upfcloud_init.sh && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
