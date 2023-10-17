@@ -52,5 +52,4 @@ nrf:
 
 upf:
     pfcp:
-      - addr: UPF1_IP
-      - addr: UPF2_IP
+      - addr: UPF_IP
