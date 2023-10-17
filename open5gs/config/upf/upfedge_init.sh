@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# BSD 2-Clause License
+
+# Copyright (c) 2020, Supreeth Herle
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+export $(cat /mnt/upf/.env) 2> /dev/null
+
+# Create the log file to emulate log volume
+mkdir -p install/var/log/open5gs && \
+touch install/var/log/open5gs/upf.log && \
+
+# Create tun device
+mkdir -p /dev/net && \
+mknod /dev/net/tun c 10 200 && \
+chmod 600 /dev/net/tun && \
+
+python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 10.45.0.0/16 --ipv6_range 2001:230:cafe::/48
+
+cp /mnt/upf/upf.yaml install/etc/open5gs
+sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+
+# Sync docker time
+#ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+cp install/etc/open5gs/upf.yaml /mnt/upf/upf_changed.yaml
