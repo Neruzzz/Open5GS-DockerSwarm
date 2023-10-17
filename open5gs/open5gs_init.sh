@@ -72,7 +72,7 @@ elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
 
 	# Execute the service init script
-	/mnt/upf/upfedge_init.sh && \
+	chmod +x /mnt/upf/upfedge_init.sh && /mnt/upf/upfedge_init.sh && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" =~ ^(webui) ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
