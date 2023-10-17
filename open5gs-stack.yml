@@ -216,33 +216,6 @@ services:
     networks:
       - common_network
 
-  upf:
-    image: ${OPEN5GS_IMAGE}
-    depends_on:
-      - nrf
-      - scp
-      - smf
-    env_file:
-      - .env
-    environment:
-      - COMPONENT_NAME=upf-cloud
-    ports:
-      - "2152:2152/udp"
-    cap_add:
-      - NET_ADMIN
-    sysctls:
-      - net.ipv4.ip_forward=1
-      #- net.ipv6.conf.all.disable_ipv6=0
-    volumes:
-      - ./open5gs/config/upf:/mnt/upf
-      - ./log:/open5gs/install/var/log/open5gs
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    networks:
-      - common_network
-
   # upf:
   #   image: ${OPEN5GS_IMAGE}
   #   depends_on:
@@ -252,7 +225,7 @@ services:
   #   env_file:
   #     - .env
   #   environment:
-  #     - COMPONENT_NAME=upf-edge
+  #     - COMPONENT_NAME=upf-cloud
   #   ports:
   #     - "2152:2152/udp"
   #   cap_add:
@@ -260,12 +233,39 @@ services:
   #   sysctls:
   #     - net.ipv4.ip_forward=1
   #     #- net.ipv6.conf.all.disable_ipv6=0
+  #   volumes:
+  #     - ./open5gs/config/upf:/mnt/upf
+  #     - ./log:/open5gs/install/var/log/open5gs
   #   deploy:
   #     placement:
   #       constraints:
-  #         - node.role == worker
+  #         - node.role == manager
   #   networks:
   #     - common_network
+
+  upf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - smf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=upf-edge
+    ports:
+      - "2152:2152/udp"
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      #- net.ipv6.conf.all.disable_ipv6=0
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    networks:
+      - common_network
 
   amf:
     image: ${OPEN5GS_IMAGE}
