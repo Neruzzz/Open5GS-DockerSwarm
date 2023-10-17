@@ -22,7 +22,7 @@ smf:
     pfcp:
       - addr: SMF_IP
     subnet:
-      - addr: 192.168.100.1/24
+      - addr: 10.45.0.0/16
         dnn: internet
         dev: ogstun
       # - addr: 2001:230:cafe::1/48

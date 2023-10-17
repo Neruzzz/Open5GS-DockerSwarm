@@ -28,12 +28,14 @@
 
 export $(cat /mnt/upf/.env) 2> /dev/null
 
-python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 192.168.100.0/24 --ipv6_range 2001:230:cafe::/48
+python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 10.45.0.0/16 --ipv6_range 2001:230:cafe::/48
 
 cp /mnt/upf/upf.yaml install/etc/open5gs
-sed -i 's|UPF1_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
-sed -i 's|SMF_IP|'$SMF_IP'|g' install/etc/open5gs/upf.yaml
-sed -i 's|UPF1_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+cp install/etc/open5gs/upf.yaml /mnt/upf/upf_changed.yaml

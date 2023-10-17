@@ -50,12 +50,18 @@ elif [[ "$COMPONENT_NAME" =~ ^(udr-[[:digit:]]+$) ]]; then
     cd install/bin && ./open5gs-udrd
 elif [[ "$COMPONENT_NAME" == "upf-cloud" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
-	sleep 10 && \
-	/mnt/udr/upf_init.sh && \
+
+	# Create tun device
+	mkdir -p /dev/net && \
+	mknod /dev/net/tun c 10 200 && \
+	chmod 600 /dev/net/tun && \
+
+	# Execute UPF script
+	chmod +x /mnt/upf/upf_init.sh && /mnt/upf/upf_init.sh && \
     cd install/bin && ./open5gs-upfd
 elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
-	
+
 	# Create the log file to emulate log volume
 	mkdir -p install/var/log/open5gs && \
 	touch install/var/log/open5gs/upf.log && \
