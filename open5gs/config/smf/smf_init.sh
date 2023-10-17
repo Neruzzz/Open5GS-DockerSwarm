@@ -43,4 +43,4 @@ cp /mnt/smf/make_certs.sh install/etc/freeDiameter
 sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/smf.yaml
 sed -i 's|SCP_IP|'$open5gs_scp'|g' install/etc/open5gs/smf.yaml
 sed -i 's|NRF_IP|'$open5gs_nrf'|g' install/etc/open5gs/smf.yaml
-sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/smf.yaml
+sed -i 's|UPF1_IP|'$open5gs_upf'|g' install/etc/open5gs/smf.yaml

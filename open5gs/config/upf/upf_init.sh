@@ -26,37 +26,19 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
-# Create the log file to emulate log volume
-mkdir -p install/var/log/open5gs
-touch install/var/log/open5gs/upf.log
-
-
-export $(cat /mnt/upf/.env) 2> /dev/null # Export the ips to be evironment variables
+export $(cat /mnt/upf/.env) 2> /dev/null
 
 # Create tun device
 mkdir -p /dev/net
 mknod /dev/net/tun c 10 200
 chmod 600 /dev/net/tun
 
-export IP_ADDR=$(awk 'END{print $1}' /etc/hosts)
-export IF_NAME=$(ip r | awk '/default/ { print $5 }')
-
-python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range $UE_IPV4_INTERNET --ipv6_range 2001:230:cafe::/48
-python3 /mnt/upf/tun_if.py --tun_ifname ogstun2 --ipv4_range $UE_IPV4_IMS --ipv6_range 2001:230:babe::/48 --nat_rule 'no'
-
-UE_IPV4_INTERNET_TUN_IP=$(python3 /mnt/upf/ip_utils.py --ip_range $UE_IPV4_INTERNET)
-UE_IPV4_IMS_TUN_IP=$(python3 /mnt/upf/ip_utils.py --ip_range $UE_IPV4_IMS)
-
+python3 /mnt/upf/tun_if.py --tun_ifname ogstun --ipv4_range 192.168.100.0/24 --ipv6_range 2001:230:cafe::/48
 
 cp /mnt/upf/upf.yaml install/etc/open5gs
-
-sed -i 's|UE_IPV4_INTERNET_TUN_IP|'$UE_IPV4_INTERNET_TUN_IP'|g' install/etc/open5gs/upf.yaml
-sed -i 's|UE_IPV4_IMS_TUN_IP|'$UE_IPV4_IMS_TUN_IP'|g' install/etc/open5gs/upf.yaml
-
-sed -i 's|UPF_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
-sed -i 's|SMF_IP|'$open5gs_smf'|g' install/etc/open5gs/upf.yaml
-sed -i 's|UPF_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF1_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
+sed -i 's|SMF_IP|'$SMF_IP'|g' install/etc/open5gs/upf.yaml
+sed -i 's|UPF1_ADVERTISE_IP|'$open5gs_upf'|g' install/etc/open5gs/upf.yaml
 
 # Sync docker time
 #ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
