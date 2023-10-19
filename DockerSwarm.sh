@@ -80,7 +80,9 @@ for service_name in $service_names; do
 done
 
 # Delete old Service names and IPs
+echo Deleting old IPs in env
 sed -i '27,$d' .env
+echo deleted
 
 # Service names and IPs to the .env file
 for service_name in "${!service_ips[@]}"; do
