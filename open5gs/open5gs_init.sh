@@ -63,9 +63,12 @@ elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	echo "Deploying component: '$COMPONENT_NAME'"
 	# Emulate volumes using github
 	# Clone the repo
-	#git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git && \ 
+	echo hola antes de todo""
+	git clone git@github.com:Neruzzz/Open5GS-DockerSwarm.git && \ 
+	echo "hola1"
 	# Create the mnt volume for the upf
 	mkdir -p /mnt/upf/ && \
+	echo "hola 2"
 	# Copy the contents to the mnt folder
 	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
 	# .env is copied on another command
