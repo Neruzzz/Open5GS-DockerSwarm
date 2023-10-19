@@ -82,15 +82,16 @@ done
 # Delete old Service names and IPs
 echo Deleting old IPs in env
 sed -i '27,$d' .env
-echo deleted
 
 # Service names and IPs to the .env file
+echo Writing new IPs to .env
 for service_name in "${!service_ips[@]}"; do
     echo "$service_name=${service_ips[$service_name]}" >> .env
 done
 
 
 # Copying the .env to all the subdirectories
+echo Copying .env to each config folder
 file_to_copy="$(dirname "$0")/.env"
 config="$(dirname "$0")/open5gs/config"
 
