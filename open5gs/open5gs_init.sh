@@ -69,7 +69,6 @@ elif [[ "$COMPONENT_NAME" == "upf-edge" ]]; then
 	cp Open5GS-DockerSwarm/open5gs/config/upf/* /mnt/upf/ && \
 	# .env is copied on another command
 	cp -pfr Open5GS-DockerSwarm/open5gs/config/upf/.env /mnt/upf/ && \
-
 	# Execute the service init script
 	chmod +x /mnt/upf/upfedge_init.sh && /mnt/upf/upfedge_init.sh && \
     cd install/bin && ./open5gs-upfd
