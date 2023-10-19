@@ -1,5 +1,6 @@
 OPEN5GS_TAG = open5gs
 UERANSIM_TAG = ueransim
+PROMETHEUS_TAG = prometheus
 MONGO_TAG = mongo
 DEPLOYMENT_TAG = swarm
 
@@ -22,6 +23,10 @@ ueransim: openfivegs
 	docker build --progress=plain -f ueransim/Dockerfile -t $(PREFIX)$(DEPLOYMENT_TAG)-$(UERANSIM_TAG):$(ARCH_TAG) . 
 	docker push $(PREFIX)$(DEPLOYMENT_TAG)-$(UERANSIM_TAG):$(ARCH_TAG)
 
-mongo: ueransim
+prometheus: ueransim
+	docker build --progress=plain -f open5gs/config/metrics/Dockerfile -t $(PREFIX)$(PROMETHEUS_TAG):$(ARCH_TAG) . 
+	docker push $(PREFIX)$(PROMETHEUS_TAG):$(ARCH_TAG)
+
+mongo: prometheus
 	docker build --progress=plain -f mongo/Dockerfile -t $(PREFIX)$(MONGO_TAG):$(ARCH_TAG) . 
 	docker push $(PREFIX)$(MONGO_TAG):$(ARCH_TAG)

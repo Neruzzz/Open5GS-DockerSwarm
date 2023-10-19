@@ -32,8 +32,25 @@ fi
 sleep 5
 echo ""
 
-echo "Creating new stack"
-docker stack deploy -c open5gs-stack.yml open5gs --with-registry-auth
+# Deployment part with flag
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 [-c for cloud | -e for edge]"
+    exit 1
+fi
+
+# Parse the flag
+flag="$1"
+if [ "$flag" = "-c" ]; then
+    yaml_file="open5gs-stack-cloud.yml"
+elif [ "$flag" = "-e" ]; then
+    yaml_file="open5gs-stack-edge.yml"
+else
+    echo "Invalid flag: $flag. Use -c for cloud or -e for edge."
+    exit 1
+fi
+
+echo "Creating new stack using $yaml_file"
+docker stack deploy -c "$yaml_file" open5gs --with-registry-auth
 echo ""
 
 echo  "Retrieving all the service IPs"
@@ -90,6 +107,10 @@ for dir in "$config"/*; do
 done
 
 # Push the changes to git so edge UPF can download them
-git add .
-git commit -m "Execution"
-git push
+# Check if the flag is "-e" (for edge) and execute git commands
+if [ "$flag" = "-e" ]; then
+    echo "Executing git commands for edge deployment"
+    git add .
+    git commit -m "Execution"
+    git push
+fi

@@ -1,0 +1,313 @@
+version: '3.8'
+
+volumes:
+  mongodb: {}
+
+networks:
+  common_network:
+    driver: overlay
+    ipam:
+      config:
+        - subnet: ${common_network}
+
+
+services:
+  mongo:
+    image: ${MONGO_IMAGE}
+    env_file:
+      - .env
+    volumes:
+      - mongodb:/var/lib/mongodb
+      - ./mongo:/mnt/mongo
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+
+  webui:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=webui
+    volumes:
+      - ./webui:/mnt/webui
+    ports:
+      - "3000:3000"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  nrf:
+    image: ${OPEN5GS_IMAGE}
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=nrf-1
+    volumes:
+      - ./open5gs/config/nrf:/mnt/nrf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  scp:
+    image: ${OPEN5GS_IMAGE}
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=scp-1
+    volumes:
+      - ./open5gs/config/scp:/mnt/scp
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  ausf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ausf-1
+    volumes:
+      - ./open5gs/config/ausf:/mnt/ausf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  udr:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=udr-1
+    volumes:
+      - ./open5gs/config/udr:/mnt/udr
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  udm:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=udm-1
+    volumes:
+      - ./open5gs/config/udm:/mnt/udm
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  pcf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=pcf-1
+    volumes:
+      - ./open5gs/config/pcf:/mnt/pcf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  bsf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=bsf-1
+    volumes:
+      - ./open5gs/config/bsf:/mnt/bsf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  nssf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - mongo
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=nssf-1
+    volumes:
+      - ./open5gs/config/nssf:/mnt/nssf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+  smf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - amf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=smf-1
+    volumes:
+      - ./open5gs/config/smf:/mnt/smf
+      - ./log:/open5gs/install/var/log/open5gs
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+
+  upf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - smf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=upf-edge
+    ports:
+      - "2152:2152/udp"
+    cap_add:
+      - NET_ADMIN
+    sysctls:
+      - net.ipv4.ip_forward=1
+      #- net.ipv6.conf.all.disable_ipv6=0
+    deploy:
+      placement:
+        constraints:
+          - node.role == worker
+    networks:
+      - common_network
+
+  amf:
+    image: ${OPEN5GS_IMAGE}
+    depends_on:
+      - nrf
+      - scp
+      - ausf
+      - udm
+      - udr
+      - pcf
+      - bsf
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=amf-1
+    volumes:
+      - ./open5gs/config/amf:/mnt/amf
+      - ./log:/open5gs/install/var/log/open5gs
+    ports:
+      - "38412:38412/sctp"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+
+  nr_gnb:
+    image: ${UERANSIM_IMAGE}
+    depends_on:
+      - amf
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ueransim:/mnt/ueransim
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ueransim-gnb-1
+    cap_add:
+      - NET_ADMIN
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
+
+  nr_ue:
+    image: ${UERANSIM_IMAGE}
+    depends_on:
+      - nr_gnb
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ueransim:/mnt/ueransim
+    env_file:
+      - .env
+    environment:
+      - COMPONENT_NAME=ueransim-ue-1
+    cap_add:
+      - NET_ADMIN
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - common_network
+
